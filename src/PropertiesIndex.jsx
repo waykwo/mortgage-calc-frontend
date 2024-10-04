@@ -1,14 +1,15 @@
 export function PropertiesIndex({properties}) {
   return (
     <div>
-      <h1>All properties</h1>
+      <h1>My properties</h1>
       {properties.map((property) => (
         <div key={property.id}>
-          <h2>{property.address}</h2>
+          <h3>{property.address}</h3>
+          <p>{property.id}</p>
           <p>{property.purchase_price}</p>
           <p>{property.interest_rate}</p>
         </div>
-      ))};
+      ))}
     </div>
   );
 }
