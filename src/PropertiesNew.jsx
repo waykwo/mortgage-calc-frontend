@@ -7,18 +7,22 @@ export function PropertiesNew({ onCreate }) {
   const [interest_rate, setInterestRate] = useState("5");
   const [amortization, setAmortization] = useState("25");
   const [loan_amount, setLoanAmount] = useState("0");
-  const [monthlyPayment, setMonthlyPayment] = useState();
+  const [monthly_payment, setMonthlyPayment] = useState();
+  const [property_tax, setPropertyTax] = useState();
+  const [paymentIncludingTax, setPaymentIncludingTax] = useState();
 
   const calculateMonthly = () => {
     const rate = parseFloat(interest_rate / (100 * 12));
     const paymentMonths = parseFloat(amortization * 12);
     const loan_amount = purchase_price - (purchase_price * down_payment / 100);
-    const monthlyPayment = 
+    const monthly_payment = 
       loan_amount * 
       ((rate * (1 + rate) ** paymentMonths) / 
       ((1 + rate) ** paymentMonths - 1));
     setLoanAmount(loan_amount);
-    setMonthlyPayment(monthlyPayment.toFixed(2));
+    setMonthlyPayment(monthly_payment.toFixed(2));
+    const paymentIncludingTax = monthly_payment + (property_tax / 12);
+    setPaymentIncludingTax(paymentIncludingTax.toFixed(2));
 
 
     // const numerator = percent_interest * Math.pow((1 + percent_interest), numPayments);
@@ -35,6 +39,7 @@ export function PropertiesNew({ onCreate }) {
     const params = new FormData(event.target);
     onCreate(params, () => event.target.reset());
     console.log(event.target);
+    console.log(params);
   };
 
   return (
@@ -161,13 +166,19 @@ export function PropertiesNew({ onCreate }) {
               <label>Monthly Payments</label>
             </div>
             <div>
-              ${Number(monthlyPayment).toLocaleString()}
+              ${Number(monthly_payment).toLocaleString()}
+            </div>
+            <div>
+              <label>Monthly with tax</label>
+            </div>
+            <div>
+              ${Number(paymentIncludingTax).toLocaleString()}
             </div>
           </div>
 
-          <div>
-            <p>If you would like to save your results to make it easier to compare multiple properties, please fill out the following fields and press <strong>Save</strong>.</p>
-          </div>
+          <hr />
+          <p>If you would like to save your results to make it easier to compare multiple properties, please fill out the following fields and press <strong>Save</strong>.</p>
+
           <div>
             <label htmlFor="address">Address</label>
           </div>
@@ -181,10 +192,14 @@ export function PropertiesNew({ onCreate }) {
             <input name="notes" type="text" />
           </div>
           <div>
-            <label htmlFor="property_tax">Property Tax</label>
+            <label htmlFor="property_tax">Annual Property Tax</label>
           </div>
           <div>
-            <input name="property_tax" type="text" />
+            <input
+              name="property_tax"
+              type="text"
+              onChange={(event) => setPropertyTax(event.target.value)}
+            />
           </div>
           <button>Save</button>
         </div>
