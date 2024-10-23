@@ -8,7 +8,7 @@ export function PropertiesPage() {
 
    const handleIndex = () => {
     console.log("handleIndex");
-    axios.get("http://localhost:3000/properties.json").then((response) => {
+    axios.get("/properties.json").then((response) => {
       console.log(response.data);
       setProperties(response.data);
     });
@@ -16,7 +16,7 @@ export function PropertiesPage() {
 
    const handleCreate = (params, successCallback) => {
     console.log("handlCreate", params);
-    axios.post("http://localhost:3000/properties.json", params).then((response) => {
+    axios.post("/properties.json", params).then((response) => {
       setProperties([...myProperties, response.data]);
       successCallback();
     });
